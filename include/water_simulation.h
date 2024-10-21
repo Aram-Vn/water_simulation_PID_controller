@@ -35,8 +35,6 @@ namespace my {
             return Constants::OutletArea * std::sqrt(2 * Constants::GravityAcceleration * m_currentWaterHeight);
         }
 
-        static WaterSimulation* instance;
-
     public:
         WaterSimulation(const WaterSimulation&)            = delete;
         WaterSimulation& operator=(const WaterSimulation&) = delete;
@@ -47,6 +45,8 @@ namespace my {
         double                  runSimulation();
 
     private:
+        static WaterSimulation* instance;
+
         const double Kp_;
         const double Ki_;
         const double Kd_;

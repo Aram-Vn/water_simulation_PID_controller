@@ -10,10 +10,15 @@ from typing import List, Optional
 main_cpp: str = 'main.cpp'
 water_simulation_cpp: str = 'src/water_simulation.cpp'
 executable_path: str = './water_simulation'
+flags: str = '-std=c++20 -Wall -Wextra -Wshadow -Wswitch -pedantic -Wformat=2 -Wconversion ' \
+                 '-Wnull-dereference -Wunused-parameter -Wunreachable-code -Wimplicit-fallthrough ' \
+                 '-Werror -Werror=return-type -Werror=uninitialized -Werror=unused-result ' \
+                 '-Werror=strict-overflow -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer'
+    
+link_libraries: str = '-lfmt'
 
 target_height: float = 750.0
 maxPoolHeight: float = 900.0
-
 
 try:
     target_height: float = float(input(f'Enter the target water height (in meters from 0 to {maxPoolHeight}): '))
@@ -23,11 +28,25 @@ try:
 except ValueError:
     target_height = 750.0;
     print(f'Invalid input. Using default target height of {target_height} meters.')
+
+# check for fmt 
+def check_fmt_library() -> bool:
+    """Check if the fmt library is installed using pkg-config."""
+    try:
+        result = subprocess.run(['pkg-config', '--exists', 'fmt'], check=True)
+        return True
+    except subprocess.CalledProcessError:
+        print("fmt library is not installed.")
+        print("using iostream.")
+        return False
     
 # Compile the program
 def compile_cpp(main_cpp: str, executable_path: str, water_simulation_cpp: str) -> bool:
-
-    compile_command: str = f'g++ {main_cpp} {water_simulation_cpp} src/PIDController.cpp -o {executable_path}'
+    if (check_fmt_library()):
+        compile_command: str = f'g++ {flags} {main_cpp} {water_simulation_cpp} src/PIDController.cpp -o {executable_path} {link_libraries}'
+    else:
+        compile_command: str = f'g++ {main_cpp} {water_simulation_cpp} src/PIDController.cpp -o {executable_path}'
+        
     print(f"Compiling {main_cpp}...")
     result: int = os.system(compile_command)
     if result != 0:

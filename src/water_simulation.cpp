@@ -9,7 +9,7 @@ namespace my {
     WaterSimulation* WaterSimulation::instance = nullptr;
 
     WaterSimulation::WaterSimulation(double TargetWaterHeight, double inputKp, double inputKi, double inputKd)
-        : Kp_(inputKd),
+        : Kp_(inputKp),
           Ki_(inputKi),
           Kd_(inputKd),
           m_currentWaterHeight(Constants::InitialWaterHeight),
