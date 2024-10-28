@@ -6,28 +6,22 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Check for fmt library
 find_package(fmt QUIET)
 
 if(NOT fmt_FOUND)
     message(WARNING "fmt library not found. Falling back to iostream.")
-    # Define a preprocessor macro to use iostream
     add_definitions(-DUSE_IOSTREAM)
 else()
-    # If fmt is found, link it
     message(STATUS "fmt library found.")
 endif()
 
 file(GLOB_RECURSE SRC_FILES "src/*.cpp")
 file(GLOB_RECURSE HDR_FILES "src/*.h")
 
-# Define the executable target
 add_executable("water_simulation" main.cpp ${SRC_FILES} ${HDR_FILES})
 
-# Include directories
 target_include_directories("water_simulation" PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-# Compile options
 target_compile_options("water_simulation" PRIVATE 
     -Wall
     -Wextra
