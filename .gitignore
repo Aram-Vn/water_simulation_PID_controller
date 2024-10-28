@@ -1,6 +1,7 @@
 water_simulation
 venv/
 .venv/
+__pycache__/
 
 build/
 compile_commands.json

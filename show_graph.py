@@ -6,6 +6,9 @@ import matplotlib.pyplot as plt
 import signal
 import sys
 from typing import List, Optional
+from matplotlib.backend_bases import FigureManagerBase
+
+import fmt_installer 
 
 main_cpp: str = 'main.cpp'
 water_simulation_cpp: str = 'src/water_simulation.cpp'
@@ -40,6 +43,12 @@ def check_fmt_library() -> bool:
         print("using iostream.")
         return False
     
+    # if fmt_installer.is_fmt_installed():
+    #     print("fmt library is already installed.")
+    # else:
+    #     print("fmt library not found. Installing...")
+    #     fmt_installer.install_fmt()
+    
 # Compile the program
 def compile_cpp(main_cpp: str, executable_path: str, water_simulation_cpp: str) -> bool:
     if (check_fmt_library()):
@@ -56,10 +65,10 @@ def compile_cpp(main_cpp: str, executable_path: str, water_simulation_cpp: str) 
     return True
 
 # for handling window close event
-def on_close(event: Optional[plt.FigureManagerBase]) -> None:
+def on_close(event: Optional[FigureManagerBase]) -> None:
     print("The plot window has been closed.")
-    plt.ioff()  
-    plt.close()  
+    plt.ioff()
+    plt.close()
     sys.exit(0)
 
 # for ctrl + c
