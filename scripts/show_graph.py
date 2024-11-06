@@ -8,11 +8,17 @@ import sys
 from typing import List, Optional
 from matplotlib.backend_bases import FigureManagerBase
 
-#import fmt_installer 
+import fmt_installer 
 
-main_cpp: str = 'main.cpp'
-water_simulation_cpp: str = 'src/water_simulation.cpp'
-executable_path: str = './water_simulation'
+# Get the absolute path of the directory containing this script
+script_dir: str = os.path.dirname(os.path.abspath(__file__))
+root_dir: str = os.path.abspath(os.path.join(script_dir, '..'))
+
+main_cpp = os.path.join(root_dir, 'main.cpp')
+pid_controller_cpp = os.path.join(root_dir, 'src', 'PIDController.cpp')
+water_simulation_cpp = os.path.join(root_dir, 'src', 'water_simulation.cpp')
+executable_path = os.path.join(root_dir, 'water_simulation')
+
 flags: str = '-std=c++20 -Wall -Wextra -Wshadow -Wswitch -pedantic -Wformat=2 -Wconversion ' \
                  '-Wnull-dereference -Wunused-parameter -Wunreachable-code -Wimplicit-fallthrough ' \
                  '-Werror -Werror=return-type -Werror=uninitialized -Werror=unused-result ' \
@@ -52,9 +58,9 @@ def check_fmt_library() -> bool:
 # Compile the program
 def compile_cpp(main_cpp: str, executable_path: str, water_simulation_cpp: str) -> bool:
     if (check_fmt_library()):
-        compile_command: str = f'g++ {flags} {main_cpp} {water_simulation_cpp} src/PIDController.cpp -o {executable_path} {link_libraries}'
+        compile_command: str = f'g++ {flags} {main_cpp} {water_simulation_cpp} {pid_controller_cpp} -o {executable_path} {link_libraries}'
     else:
-        compile_command: str = f'g++ {main_cpp} {water_simulation_cpp} src/PIDController.cpp -o {executable_path}'
+        compile_command: str = f'g++ {main_cpp} {water_simulation_cpp} {pid_controller_cpp} -o {executable_path}'
         
     print(f"Compiling {main_cpp}...")
     result: int = os.system(compile_command)
