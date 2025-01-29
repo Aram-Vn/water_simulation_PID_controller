@@ -10,6 +10,8 @@
 #endif
 
 #include <chrono>
+#include <cstdlib>
+#include <ctime>
 #include <thread>
 
 int main()
@@ -26,12 +28,14 @@ int main()
 
     if (std::cin.fail())
     {
-        targetWaterHeight = 150.0;
+        std::srand(static_cast<unsigned int>(std::time(0)));
+        targetWaterHeight = std::rand() % (890 - 10 + 1) + 10;
+
 #ifdef FMT_AVAILABLE
-        fmt::print(fmt::emphasis::bold | fg(fmt::color::red), "Invalid input, targetWaterHeight will default to: {}\n",
+        fmt::print(fmt::emphasis::bold | fg(fmt::color::red), "Invalid input, targetWaterHeight will be: {}\n",
                    targetWaterHeight);
 #else
-        std::cerr << "Invalid input, targetWaterHeight will default to: " << targetWaterHeight << std::endl;
+        std::cerr << "Invalid input, targetWaterHeight will be: " << targetWaterHeight << std::endl;
 #endif
         std::this_thread::sleep_for(std::chrono::seconds(5));
     }
