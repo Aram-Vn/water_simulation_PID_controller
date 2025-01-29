@@ -10,17 +10,17 @@
 #endif
 
 #include <chrono>
-#include <cstdlib>
-#include <ctime>
+#include <random>
 #include <thread>
 
 int main()
 {
 #ifdef FMT_AVAILABLE
-    fmt::print(fmt::emphasis::bold | fg(fmt::color::blue), "Enter the target water height (in meters from 0 to 900): ");
+    fmt::print(fmt::emphasis::bold | fg(fmt::color::blue),
+               "Enter the target water height (in meters from 0 to {}): ", my::Constants::MaxPoolHeight);
 #else
     std::cout << "using cout" << std::endl;
-    std::cout << "Enter the target water height (in meters from 0 to 900): ";
+    std::cout << "Enter the target water height (in meters from 0 to " << my::Constants::MaxPoolHeight << " ): ";
 #endif
 
     double targetWaterHeight = 150.0;
@@ -28,8 +28,11 @@ int main()
 
     if (std::cin.fail())
     {
-        std::srand(static_cast<unsigned int>(std::time(0)));
-        targetWaterHeight = std::rand() % (890 - 10 + 1) + 10;
+        std::random_device              rd;
+        std::mt19937                    gen(rd());
+        std::uniform_int_distribution<> dis(10, static_cast<int>(my::Constants::MaxPoolHeight) - 10);
+
+        targetWaterHeight = dis(gen);
 
 #ifdef FMT_AVAILABLE
         fmt::print(fmt::emphasis::bold | fg(fmt::color::red), "Invalid input, targetWaterHeight will be: {}\n",
