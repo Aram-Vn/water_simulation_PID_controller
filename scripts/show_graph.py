@@ -150,7 +150,7 @@ def run_and_plot(executable_path: str, target_height: float) -> None:
                 ax.relim()
                 ax.autoscale_view()
 
-                input_rate_text.set_text(f'Water Input Rate: {current_rate:.2f} m³/s')
+                input_rate_text.set_text(f'Water Input Rate: {current_rate} m³/s')
 
                 plt.draw()
                 plt.pause(0.01)  # Pause to allow the plot to update
@@ -159,7 +159,7 @@ def run_and_plot(executable_path: str, target_height: float) -> None:
         print("Process interrupted by user.")
 
     finally:
-        print(f"Final water input rate: {current_rate:.2f} m³/s")
+        print(f"Final water input rate: {current_rate} m³/s")
         proc.terminate()
         proc.wait()
         plt.ioff()  

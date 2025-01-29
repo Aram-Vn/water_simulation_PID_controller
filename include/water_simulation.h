@@ -1,6 +1,15 @@
 #ifndef WATER_SIMULATION_H
 #define WATER_SIMULATION_H
 
+#if __has_include(<fmt/core.h>)
+#include <fmt/color.h>
+#include <fmt/core.h>
+#define FMT_AVAILABLE 1
+#else
+#define FMT_AVAILABLE 0
+#include <iostream>
+#endif
+
 #include "PIDController.h"
 #include <chrono>
 #include <cmath>

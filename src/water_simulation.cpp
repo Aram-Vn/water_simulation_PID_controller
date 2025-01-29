@@ -21,8 +21,15 @@ namespace my {
     {
         if (m_targetWaterHeight < 0 || m_targetWaterHeight > Constants::MaxPoolHeight)
         {
-            std::cerr << "Invalid input. Using default target height of 7500 meters." << std::endl;
-            m_targetWaterHeight = 7500.0;
+            m_targetWaterHeight = 750.0;
+#ifdef FMT_AVAILABLE
+            fmt::print(fmt::emphasis::bold | fg(fmt::color::red),
+                       "Invalid input. Using default target height of {} meters.\n", m_targetWaterHeight);
+#else
+            std::cerr << "Invalid input. Using default target height of " << m_targetWaterHeight << " meters."
+                      << std::endl;
+#endif
+            std::this_thread::sleep_for(std::chrono::seconds(5));
         }
     }
 
@@ -62,16 +69,29 @@ namespace my {
                 m_currentWaterHeight = 0;
             }
 
+#ifdef FMT_AVAILABLE
+            fmt::print("Current time: {} seconds, Water height: {} meters, Water input rate: {} m^3/s\n",
+                       fmt::format(fg(fmt::color::cyan), "{}", m_simulationTime),
+                       fmt::format(fg(fmt::color::blue), "{}", m_currentWaterHeight),
+                       fmt::format(fg(fmt::color::yellow), "{}", m_waterInputRate));
+#else
             std::cout << "Current time: " << m_simulationTime << " seconds, Water height: " << m_currentWaterHeight
                       << " meters, Water input rate: " << m_waterInputRate << " m^3/s" << std::endl;
+#endif
 
             std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
             m_simulationTime += Constants::TimeStep;
         }
 
+#ifdef FMT_AVAILABLE
+        fmt::print(fmt::emphasis::bold | fg(fmt::color::green),
+                   "Max simulation time reached. Final water height: {} meters with water input rate: {} m^3/s\n",
+                   m_currentWaterHeight, m_waterInputRate);
+#else
         std::cout << "Max simulation time reached. Final water height: " << m_currentWaterHeight
                   << " meters with water input rate: " << m_waterInputRate << " m^3/s" << std::endl;
+#endif
 
         return m_waterInputRate;
     }
