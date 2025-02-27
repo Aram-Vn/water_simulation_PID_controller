@@ -71,9 +71,7 @@ namespace my {
 
 #ifdef FMT_AVAILABLE
             fmt::print("Current time: {} seconds, Water height: {} meters, Water input rate: {} m^3/s\n",
-                       fmt::format(fg(fmt::color::cyan), "{}", m_simulationTime),
-                       fmt::format(fg(fmt::color::blue), "{}", m_currentWaterHeight),
-                       fmt::format(fg(fmt::color::yellow), "{}", m_waterInputRate));
+                       m_simulationTime, m_currentWaterHeight, m_waterInputRate);
 #else
             std::cout << "Current time: " << m_simulationTime << " seconds, Water height: " << m_currentWaterHeight
                       << " meters, Water input rate: " << m_waterInputRate << " m^3/s" << std::endl;
